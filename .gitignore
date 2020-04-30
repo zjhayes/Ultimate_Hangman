@@ -1,3 +1,4 @@
 .idea
 Ultimate_Hangman.iml
 .DS_Store
+class_definitions/__pycache__/
