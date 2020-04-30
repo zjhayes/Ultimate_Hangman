@@ -1,3 +1,5 @@
+# Zachary Hayes
+
 
 class Dictionary:
     '''Dictionary class provides random words.'''
