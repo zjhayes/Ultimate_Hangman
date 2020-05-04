@@ -45,7 +45,7 @@ class UIController:
         self.guess_combobox['values'] = self.game.available_choices
         self.guess.set('Guess:')
         self.hangman_canvas.itemconfig(True, image=self.hangman_images[self.game.guesses_made])
-        self.update_word()
+        self.update_ui()
 
     def setup(self):
         '''Set the UI configurations'''
@@ -62,10 +62,11 @@ class UIController:
         self.word_label.grid(column=0, row=4)
         self.guess_combobox.grid(column = 0, row = 5)
 
-    def update_word(self):
+    def update_ui(self):
         self.word_label.config(text=self.game.get_word())
+        self.score.config(text=self.game.get_score())
 
     def run(self):
         '''Runs the game'''
-        self.update_word()
+        self.update_ui()
         self.m.mainloop()
