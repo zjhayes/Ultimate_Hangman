@@ -8,6 +8,9 @@ class GameController:
     def __init__(self):
         pass
 
+    def get_word(self):
+        return "word"
+
 
 # Driver
 
