@@ -18,7 +18,6 @@ class UIController:
         self.hangman_canvas = Canvas(self.m, width=175, height=275, bg=self.bg_color, borderwidth=0, highlightthickness=0)
         self.word_label = tkinter.Label(self.m, bg=self.bg_color, fg="black", text="")
         self.guess = tkinter.StringVar(self.m)
-
         self.guess.set('Guess:')
         self.guess_combobox = ttk.Combobox(self.m, width=10, textvariable=self.guess)
         self.guess_combobox['values'] = self.game.available_choices
@@ -46,6 +45,7 @@ class UIController:
         self.guess_combobox['values'] = self.game.available_choices
         self.guess.set('Guess:')
         self.hangman_canvas.itemconfig(True, image=self.hangman_images[self.game.guesses_made])
+        self.update_word()
 
     def setup(self):
         '''Set the UI configurations'''
@@ -62,10 +62,10 @@ class UIController:
         self.word_label.grid(column=0, row=4)
         self.guess_combobox.grid(column = 0, row = 5)
 
-    def set_new_word(self):
+    def update_word(self):
         self.word_label.config(text=self.game.get_word())
 
     def run(self):
         '''Runs the game'''
-        self.set_new_word()
+        self.update_word()
         self.m.mainloop()

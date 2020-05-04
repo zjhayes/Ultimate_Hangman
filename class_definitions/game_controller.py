@@ -12,7 +12,13 @@ class GameController:
         self.guesses_made = 0
 
     def get_word(self):
-        return self.current_word
+        word_progress = []
+        for character in self.current_word:
+            if self.available_choices.__contains__(character.upper()):
+                word_progress.append('_')
+            else:
+                word_progress.append(character.upper())
+        return word_progress
 
     def make_guess(self, guess):
         print(guess)
