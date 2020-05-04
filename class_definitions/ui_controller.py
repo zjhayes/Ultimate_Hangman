@@ -18,11 +18,10 @@ class UIController:
         self.hangman_canvas = Canvas(self.m, width=175, height=275, bg=self.bg_color, borderwidth=0, highlightthickness=0)
         self.word_label = tkinter.Label(self.m, bg=self.bg_color, fg="black", text="")
         self.guess = tkinter.StringVar(self.m)
-        self.available_choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-                                  'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
         self.guess.set('Guess:')
         self.guess_combobox = ttk.Combobox(self.m, width=10, textvariable=self.guess)
-        self.guess_combobox['values'] = self.available_choices
+        self.guess_combobox['values'] = self.game.available_choices
         self.guess_combobox.bind('<<ComboboxSelected>>', self.on_guess_made)
         hangman0 = PhotoImage(file="../images/hangman-0.gif")
         hangman1 = PhotoImage(file="../images/hangman-1.gif")
@@ -43,9 +42,10 @@ class UIController:
 
     def on_guess_made(self, event):
         '''When user makes a guess.'''
-        self.available_choices.remove(self.guess_combobox.get())
-        self.guess_combobox['values'] = self.available_choices
-        print(self.guess_combobox['values'])
+        self.game.make_guess(self.guess_combobox.get())
+        self.guess_combobox['values'] = self.game.available_choices
+        self.guess.set('Guess:')
+        self.hangman_canvas.itemconfig(True, image=self.hangman_images[self.game.guesses_made])
 
     def setup(self):
         '''Set the UI configurations'''
