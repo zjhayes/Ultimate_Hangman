@@ -2,6 +2,7 @@
 import tkinter
 from tkinter import *
 from tkinter import ttk
+from functools import partial
 
 
 class UIController:
@@ -41,11 +42,14 @@ class UIController:
 
     def on_guess_made(self, event):
         '''When user makes a guess.'''
-        self.game.make_guess(self.guess_combobox.get())
-        self.guess_combobox['values'] = self.game.available_choices
-        self.guess.set('Guess:')
-        self.hangman_canvas.itemconfig(True, image=self.hangman_images[self.game.wrong_guesses])
-        self.update_ui()
+        results = self.game.make_guess(self.guess_combobox.get())
+        if results == 1:  # Game Won
+            self.win_message()
+        elif results == -1: # Game Lost
+            self.hangman_canvas.itemconfig(True, image=self.hangman_images[self.game.wrong_guesses])
+            self.lose_message()
+        else:
+            self.update()
 
     def setup(self):
         '''Set the UI configurations'''
@@ -62,11 +66,47 @@ class UIController:
         self.word_label.grid(column=0, row=4)
         self.guess_combobox.grid(column=0, row=5)
 
-    def update_ui(self):
+    def update(self):
+        self.guess_combobox['values'] = self.game.available_choices
         self.word_label.config(text=self.game.get_word())
         self.score.config(text=self.game.get_score())
+        self.hangman_canvas.itemconfig(True, image=self.hangman_images[self.game.wrong_guesses])
+        self.guess.set('Guess:')
 
     def run(self):
         '''Runs the game'''
-        self.update_ui()
+        self.update()
         self.m.mainloop()
+
+    def win_message(self):
+        '''Create a Win window'''
+        win = tkinter.Tk()
+        win.minsize(200, 100)
+        win.configure(bg=self.bg_color)
+        win.wm_title("You guessed it!")
+        label = ttk.Label(win, text="You Won!")
+        label.pack(side="top", fill="x", pady=10)
+        score_label = ttk.Label(win, text=("Your score is " + self.game.get_score()))
+        score_label.pack(side="top", fill="x", pady=10)
+        button = ttk.Button(win, text="Play Again", command=partial(self.on_play_again, win))
+        button.pack()
+        win.mainloop()
+
+    def lose_message(self):
+        '''Create a Lose window'''
+        lose = tkinter.Tk()
+        lose.minsize(200, 100)
+        lose.configure(bg=self.bg_color)
+        lose.wm_title("Poor guy...")
+        label = ttk.Label(lose, text="You Lost")
+        label.pack(side="top", fill="x", pady=10)
+        word_label = ttk.Label(lose, text=("The word was " + self.game.current_word))
+        word_label.pack(side="top", fill="x", pady=10)
+        button = ttk.Button(lose, text="Play Again", command=partial(self.on_play_again, lose))
+        button.pack()
+        lose.mainloop()
+
+    def on_play_again(self, window):
+        window.destroy()
+        self.game.reset_game()
+        self.update()

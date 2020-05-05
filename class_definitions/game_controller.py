@@ -16,7 +16,6 @@ class GameController:
         self.correct_guesses = 0
         self.max_guesses = 10
         self.score = 0
-        print(self.current_word)
 
     def get_word(self):
         word_progress = []
@@ -36,22 +35,19 @@ class GameController:
         if self.current_word.__contains__(guess.lower()):
             self.add_points(guess)
             self.correct_guesses += 1
-            if self.correct_guesses == len(self.current_word):
-                print("WON")
-                return True     # Game is won.
+            if self.correct_guesses == self.get_num_unique_char():
+                return 1     # Game is won.
             else:
-                return False    # Game continues.
+                return 0    # Game continues.
         else:
             self.wrong_guesses += 1
-            print("Wrong: " + str(self.wrong_guesses))
-            print("Correct: " + str(self.correct_guesses))
             if self.wrong_guesses >= self.max_guesses:
-                print("LOST")
-                return False    # Game is lost.
+                return -1    # Game is lost.
             else:
-                return True     # Game continues.
+                return 0     # Game continues.
 
     def reset_game(self):
+        '''Resets game values to start new game.'''
         self.available_choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
                                   'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
         self.current_word = self.dictionary.get_random_word()
@@ -68,6 +64,11 @@ class GameController:
         if vowels.__contains__(guess):
             self.score += 50 * self.correct_guesses
         self.score = math.ceil(self.score)
+
+    def get_num_unique_char(self):
+        '''Returns number of unique characters in current word.'''
+        unique_characters = set(self.current_word)
+        return len(unique_characters)
 
 # Driver
 
