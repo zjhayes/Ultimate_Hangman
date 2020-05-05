@@ -69,8 +69,3 @@ class GameController:
         '''Returns number of unique characters in current word.'''
         unique_characters = set(self.current_word)
         return len(unique_characters)
-
-# Driver
-
-game = GameController()
-gui = UIController(game)
