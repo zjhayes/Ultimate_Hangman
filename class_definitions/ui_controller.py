@@ -55,7 +55,7 @@ class UIController:
         '''Set the UI configurations'''
         self.m.configure(bg=self.bg_color)
         self.m.title("Ultimate Hangman")
-        self.m.minsize(400, 600)
+        self.m.minsize(200, 400)
 
     def put_ui_elements(self):
         '''Put UI elements on window grid.'''
