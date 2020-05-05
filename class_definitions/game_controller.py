@@ -1,5 +1,4 @@
 # Zachary Hayes
-from class_definitions.ui_controller import UIController
 import math
 from class_definitions.dictionary import Dictionary
 
